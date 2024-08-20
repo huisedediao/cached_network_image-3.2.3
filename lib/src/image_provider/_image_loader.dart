@@ -9,9 +9,6 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import '../cached_network_image_platform_interface.dart' as platform
     show ImageLoader;
 
-typedef DecoderCallback = Future<ui.Codec> Function(Uint8List buffer,
-    {int? cacheWidth, int? cacheHeight, bool allowUpscaling});
-
 /// ImageLoader class to load images on IO platforms.
 class ImageLoader implements platform.ImageLoader {
   @Deprecated('use loadBufferAsync instead')
@@ -20,7 +17,7 @@ class ImageLoader implements platform.ImageLoader {
     String url,
     String? cacheKey,
     StreamController<ImageChunkEvent> chunkEvents,
-    DecoderCallback decode,
+    DecoderCallback1 decode,
     BaseCacheManager cacheManager,
     int? maxHeight,
     int? maxWidth,
@@ -81,7 +78,7 @@ class ImageLoader implements platform.ImageLoader {
     String url,
     String? cacheKey,
     StreamController<ImageChunkEvent> chunkEvents,
-    DecoderCallback decode,
+    DecoderCallback1 decode,
     BaseCacheManager cacheManager,
     int? maxHeight,
     int? maxWidth,

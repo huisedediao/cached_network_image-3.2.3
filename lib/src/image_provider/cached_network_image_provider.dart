@@ -2,7 +2,7 @@ import 'dart:async' show Future, StreamController;
 import 'dart:ui' as ui show Codec;
 
 import '../cached_network_image_platform_interface.dart'
-    show ImageRenderMethodForWeb;
+    show DecoderCallback1, ImageRenderMethodForWeb;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -74,7 +74,7 @@ class CachedNetworkImageProvider
       'load is deprecated, use loadBuffer instead, see https://docs.flutter.dev/release/breaking-changes/image-provider-load-buffer')
   @override
   ImageStreamCompleter load(
-      image_provider.CachedNetworkImageProvider key, DecoderCallback decode) {
+      image_provider.CachedNetworkImageProvider key, DecoderCallback1 decode) {
     final chunkEvents = StreamController<ImageChunkEvent>();
     return MultiImageStreamCompleter(
       codec: _loadAsync(key, chunkEvents, decode),
@@ -95,7 +95,7 @@ class CachedNetworkImageProvider
   Stream<ui.Codec> _loadAsync(
     image_provider.CachedNetworkImageProvider key,
     StreamController<ImageChunkEvent> chunkEvents,
-    DecoderCallback decode,
+    DecoderCallback1 decode,
   ) {
     assert(key == this);
     return ImageLoader().loadAsync(

@@ -7,7 +7,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
-typedef DecoderCallback = Future<ui.Codec> Function(Uint8List buffer,
+typedef DecoderCallback1 = Future<ui.Codec> Function(Uint8List buffer,
     {int? cacheWidth, int? cacheHeight, bool allowUpscaling});
 
 /// Render options for images on the web platform.
@@ -30,7 +30,7 @@ class ImageLoader {
     String url,
     String? cacheKey,
     StreamController<ImageChunkEvent> chunkEvents,
-    DecoderCallback decode,
+    DecoderCallback1 decode,
     BaseCacheManager cacheManager,
     int? maxHeight,
     int? maxWidth,
