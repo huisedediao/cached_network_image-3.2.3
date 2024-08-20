@@ -9,6 +9,9 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import '../cached_network_image_platform_interface.dart' as platform
     show ImageLoader;
 
+typedef DecoderCallback = Future<ui.Codec> Function(Uint8List buffer,
+    {int? cacheWidth, int? cacheHeight, bool allowUpscaling});
+
 /// ImageLoader class to load images on IO platforms.
 class ImageLoader implements platform.ImageLoader {
   @Deprecated('use loadBufferAsync instead')
@@ -17,7 +20,7 @@ class ImageLoader implements platform.ImageLoader {
     String url,
     String? cacheKey,
     StreamController<ImageChunkEvent> chunkEvents,
-    ImageDecoderCallback decode,
+    DecoderCallback decode,
     BaseCacheManager cacheManager,
     int? maxHeight,
     int? maxWidth,
@@ -58,8 +61,11 @@ class ImageLoader implements platform.ImageLoader {
       url,
       cacheKey,
       chunkEvents,
-      (bytes, {getTargetSize}) async {
-        return decode(bytes);
+      (bytes,
+          {bool allowUpscaling = false,
+          int? cacheHeight,
+          int? cacheWidth}) async {
+        return decode(await ui.ImmutableBuffer.fromUint8List(bytes));
       },
       cacheManager,
       maxHeight,
@@ -75,7 +81,7 @@ class ImageLoader implements platform.ImageLoader {
     String url,
     String? cacheKey,
     StreamController<ImageChunkEvent> chunkEvents,
-    ImageDecoderCallback decode,
+    DecoderCallback decode,
     BaseCacheManager cacheManager,
     int? maxHeight,
     int? maxWidth,
@@ -112,8 +118,7 @@ class ImageLoader implements platform.ImageLoader {
         if (result is FileInfo) {
           var file = result.file;
           var bytes = await file.readAsBytes();
-          var decoded =
-              await decode(await ui.ImmutableBuffer.fromUint8List(bytes));
+          var decoded = await decode(bytes);
           yield decoded;
         }
       }

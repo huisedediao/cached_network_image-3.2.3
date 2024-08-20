@@ -1,10 +1,14 @@
 library cached_network_image_platform_interface;
 
 import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
+typedef DecoderCallback = Future<ui.Codec> Function(Uint8List buffer,
+    {int? cacheWidth, int? cacheHeight, bool allowUpscaling});
 
 /// Render options for images on the web platform.
 enum ImageRenderMethodForWeb {
@@ -26,7 +30,7 @@ class ImageLoader {
     String url,
     String? cacheKey,
     StreamController<ImageChunkEvent> chunkEvents,
-    ImageDecoderCallback decode,
+    DecoderCallback decode,
     BaseCacheManager cacheManager,
     int? maxHeight,
     int? maxWidth,
